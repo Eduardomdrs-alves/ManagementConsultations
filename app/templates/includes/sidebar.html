@@ -36,8 +36,8 @@
             </div>
         </div>
        <form method="post" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit" class="logout-link logout-button">Sair da conta</button>
-</form>
+         {% csrf_token %}
+            <button type="submit" class="logout-link logout-button">Sair da conta</button>
+        </form>
     </div>
 </aside>

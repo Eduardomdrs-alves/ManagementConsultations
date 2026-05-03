@@ -13,7 +13,7 @@ from .models import Consultation
 
 class CustomLoginView(LoginView):
     template_name = "registration/login.html"
-    redirect_authenticated_user = True
+    redirect_authenticated_user = False
 
     def get_success_url(self):
         user = self.request.user
