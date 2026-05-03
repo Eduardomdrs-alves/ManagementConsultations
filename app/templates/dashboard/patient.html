@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard | MedBoard{% endblock %}
+{% block body_class %}app-page{% endblock %}
+
+{% block layout %}
+<main class="app-shell">
+    {% include 'includes/sidebar.html' %}
+
+    <section class="content-shell">
+        <header class="page-header">
+            <div>
+                <span class="eyebrow">Bom dia, {{ request.user.username }}!</span>
+                <h1>Seu Dashboard de Saude</h1>
+            </div>
+            <a href="{% url 'consultation_create' %}" class="primary-button header-button">Novo agendamento</a>
+        </header>
+
+        <section class="stats-grid">
+            <article class="hero-card primary-surface">
+                <span class="card-kicker">Proxima consulta</span>
+                {% if next_consultation %}
+                    <h2>{{ next_consultation.date|date:"d \\d\\e F, Y" }}</h2>
+                    <p>{{ next_consultation.date|date:"H:i" }} - {{ next_consultation.doctor.get_specialty_display }}</p>
+                    <strong>{{ next_consultation.doctor.nome }}</strong>
+                {% else %}
+                    <h2>Nenhuma consulta agendada</h2>
+                    <p>Quando você criar uma consulta, ela aparecerá aqui.</p>
+                {% endif %}
+            </article>
+
+            <article class="hero-card">
+                <span class="card-kicker">Seu progresso</span>
+                <h2>{{ progress_percent }}%</h2>
+                <p>Percentual de consultas concluídas dentro do seu histórico atual.</p>
+                <div class="progress-track">
+                    <span class="progress-bar" style="width: {{ progress_percent }}%;"></span>
+                </div>
+            </article>
+
+            <article class="hero-card">
+                <span class="card-kicker">Resumo rapido</span>
+                <h2>{{ consultation_count }}</h2>
+                <p>Total de consultas visíveis para sua conta.</p>
+                <a class="text-link" href="{% url 'consultation_list' %}">Ver histórico completo</a>
+            </article>
+        </section>
+
+        <section class="section-head">
+            <h2>Consultas Recentes</h2>
+            <a class="text-link" href="{% url 'consultation_list' %}">Ver tudo</a>
+        </section>
+
+        <div class="list-stack">
+            {% for consultation in recent_consultations %}
+                <article class="consultation-row">
+                    <div class="calendar-badge">
+                        <span>{{ consultation.date|date:"M"|upper }}</span>
+                        <strong>{{ consultation.date|date:"d" }}</strong>
+                    </div>
+                    <div class="consultation-info">
+                        <h3>{{ consultation.doctor.nome }}</h3>
+                        <p>{{ consultation.doctor.get_specialty_display }} - {{ consultation.date|date:"d/m/Y H:i" }}</p>
+                    </div>
+                    <span class="status-pill {% if consultation.date < now %}success{% else %}warning{% endif %}">
+                        {% if consultation.date < now %}Concluído{% else %}Agendado{% endif %}
+                    </span>
+                </article>
+            {% empty %}
+                <article class="empty-card">
+                    <h3>Nenhuma consulta encontrada</h3>
+                    <p>Agende sua primeira consulta para preencher este painel.</p>
+                </article>
+            {% endfor %}
+        </div>
+    </section>
+</main>
+{% endblock %}

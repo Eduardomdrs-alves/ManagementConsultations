@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Consultas | MedBoard{% endblock %}
+{% block body_class %}app-page{% endblock %}
+
+{% block layout %}
+<main class="app-shell">
+    {% include 'includes/sidebar.html' %}
+
+    <section class="content-shell">
+        <header class="page-header">
+            <div>
+                <span class="eyebrow">Historico e agenda</span>
+                <h1>{% if is_patient %}Suas Consultas{% else %}Agenda de Consultas{% endif %}</h1>
+            </div>
+            {% if is_patient %}
+                <a href="{% url 'consultation_create' %}" class="primary-button header-button">Agendar nova</a>
+            {% endif %}
+        </header>
+
+        <section class="summary-bar">
+            <div class="summary-chip">
+                <strong>{{ consultations|length }}</strong>
+                <span>Total</span>
+            </div>
+            <div class="summary-chip">
+                <strong>{{ upcoming_count }}</strong>
+                <span>Futuras</span>
+            </div>
+            <div class="summary-chip">
+                <strong>{{ finished_count }}</strong>
+                <span>Concluidas</span>
+            </div>
+        </section>
+
+        <div class="list-stack">
+            {% for consultation in consultations %}
+                <article class="consultation-row spacious">
+                    <div class="calendar-badge">
+                        <span>{{ consultation.date|date:"m" }}</span>
+                        <strong>{{ consultation.date|date:"d" }}</strong>
+                    </div>
+                    <div class="consultation-info">
+                        {% if is_patient %}
+                            <h3>{{ consultation.doctor.nome }}</h3>
+                            <p>{{ consultation.date|date:"H:i" }} - {{ consultation.doctor.get_specialty_display }}</p>
+                        {% else %}
+                            <h3>{{ consultation.patient.nome }}</h3>
+                            <p>{{ consultation.date|date:"H:i" }} - {{ consultation.patient.email }}</p>
+                        {% endif %}
+                    </div>
+                    <span class="status-pill {% if consultation.date < now %}success{% else %}warning{% endif %}">
+                        {% if consultation.date < now %}Concluído{% else %}Confirmado{% endif %}
+                    </span>
+                    {% if is_patient %}
+                        <div class="row-actions">
+                            <a class="icon-action" href="{% url 'consultation_update' consultation.pk %}">Editar</a>
+                            <a class="icon-action danger" href="{% url 'consultation_delete' consultation.pk %}">Excluir</a>
+                        </div>
+                    {% endif %}
+                </article>
+            {% empty %}
+                <article class="empty-card">
+                    <h3>Nenhuma consulta encontrada</h3>
+                    <p>{% if is_patient %}Você ainda não possui consultas cadastradas.{% else %}Não existem consultas vinculadas ao seu perfil médico.{% endif %}</p>
+                </article>
+            {% endfor %}
+        </div>
+    </section>
+</main>
+{% endblock %}

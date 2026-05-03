@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Cadastro de Paciente | MedBoard{% endblock %}
+
+{% block layout %}
+<main class="choice-shell">
+    <header class="simple-header">
+        <a class="brand compact" href="{% url 'login' %}">
+            <span class="brand-mark">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 2 5 5v6c0 4.5 2.9 8.6 7 10 4.1-1.4 7-5.5 7-10V5l-7-3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                    <path d="M9.4 12.3 11.2 14l3.6-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            <span><strong>MedBoard</strong></span>
+        </a>
+        <a class="back-link" href="{% url 'register_choice' %}">Voltar</a>
+    </header>
+
+    <section class="form-hero">
+        <div class="form-hero-copy">
+            <span class="eyebrow">Cadastro de paciente</span>
+            <h1>Dados Pessoais</h1>
+            <p>Preencha as informações abaixo para criar sua conta.</p>
+        </div>
+
+        <div class="profile-form-card">
+            <form method="post" class="form-grid">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <div class="form-alert full">{{ form.non_field_errors|join:', ' }}</div>
+                {% endif %}
+
+                <div class="field-group">
+                    <label for="{{ form.nome.id_for_label }}">Nome completo</label>
+                    {{ form.nome }}
+                    {% if form.nome.errors %}<small class="field-error">{{ form.nome.errors|join:', ' }}</small>{% endif %}
+                </div>
+                <div class="field-group">
+                    <label for="{{ form.birth_date.id_for_label }}">Data de nascimento</label>
+                    {{ form.birth_date }}
+                    {% if form.birth_date.errors %}<small class="field-error">{{ form.birth_date.errors|join:', ' }}</small>{% endif %}
+                </div>
+                <div class="field-group full">
+                    <label for="{{ form.email.id_for_label }}">E-mail</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}<small class="field-error">{{ form.email.errors|join:', ' }}</small>{% endif %}
+                </div>
+                <div class="field-group">
+                    <label for="{{ form.telefone.id_for_label }}">Telefone</label>
+                    {{ form.telefone }}
+                    {% if form.telefone.errors %}<small class="field-error">{{ form.telefone.errors|join:', ' }}</small>{% endif %}
+                </div>
+                <div class="field-group">
+                    <label for="{{ form.username.id_for_label }}">Usuário</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}<small class="field-error">{{ form.username.errors|join:', ' }}</small>{% endif %}
+                </div>
+                <div class="field-group">
+                    <label for="{{ form.password.id_for_label }}">Crie uma senha</label>
+                    {{ form.password }}
+                    {% if form.password.errors %}<small class="field-error">{{ form.password.errors|join:', ' }}</small>{% endif %}
+                </div>
+                <div class="field-group">
+                    <label for="{{ form.password_confirm.id_for_label }}">Confirme a senha</label>
+                    {{ form.password_confirm }}
+                    {% if form.password_confirm.errors %}<small class="field-error">{{ form.password_confirm.errors|join:', ' }}</small>{% endif %}
+                </div>
+
+                <button type="submit" class="primary-button full">Finalizar cadastro</button>
+            </form>
+        </div>
+    </section>
+</main>
+{% endblock %}

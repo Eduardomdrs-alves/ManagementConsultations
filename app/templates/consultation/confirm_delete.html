@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Excluir Consulta | MedBoard{% endblock %}
+{% block body_class %}app-page{% endblock %}
+
+{% block layout %}
+<main class="app-shell">
+    {% include 'includes/sidebar.html' %}
+
+    <section class="content-shell">
+        <header class="page-header">
+            <div>
+                <span class="eyebrow">Remocao</span>
+                <h1>Excluir consulta</h1>
+                <p class="page-copy">Esta ação vai remover a consulta da sua lista ativa.</p>
+            </div>
+        </header>
+
+        <div class="modal-card compact">
+            <div class="delete-copy">
+                <h2>Confirma a exclusao?</h2>
+                <p>{{ object.doctor.nome }} - {{ object.date|date:"d/m/Y H:i" }}</p>
+                <p class="muted">{{ object.description|default:"Sem descricao informada." }}</p>
+            </div>
+
+            <form method="post" class="button-row">
+                {% csrf_token %}
+                <a class="secondary-button" href="{% url 'consultation_list' %}">Cancelar</a>
+                <button type="submit" class="danger-button">Excluir consulta</button>
+            </form>
+        </div>
+    </section>
+</main>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ form_title }} | MedBoard{% endblock %}
+{% block body_class %}app-page{% endblock %}
+
+{% block layout %}
+<main class="app-shell">
+    {% include 'includes/sidebar.html' %}
+
+    <section class="content-shell">
+        <header class="page-header">
+            <div>
+                <span class="eyebrow">Agendamento</span>
+                <h1>{{ form_title }}</h1>
+                <p class="page-copy">{{ form_subtitle }}</p>
+            </div>
+        </header>
+
+        <div class="modal-card">
+            <form method="post" class="form-grid consultation-grid">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <div class="form-alert full">{{ form.non_field_errors|join:', ' }}</div>
+                {% endif %}
+
+                <div class="field-group">
+                    <label for="{{ form.doctor.id_for_label }}">Médico(a)</label>
+                    {{ form.doctor }}
+                    {% if form.doctor.errors %}<small class="field-error">{{ form.doctor.errors|join:', ' }}</small>{% endif %}
+                </div>
+                <div class="field-group">
+                    <label for="{{ form.date.id_for_label }}">Data e horário</label>
+                    {{ form.date }}
+                    {% if form.date.errors %}<small class="field-error">{{ form.date.errors|join:', ' }}</small>{% endif %}
+                </div>
+                <div class="field-group full">
+                    <label for="{{ form.description.id_for_label }}">Descrição do sintoma / motivo</label>
+                    {{ form.description }}
+                    {% if form.description.errors %}<small class="field-error">{{ form.description.errors|join:', ' }}</small>{% endif %}
+                </div>
+
+                <div class="button-row full">
+                    <a class="secondary-button" href="{{ cancel_url }}">Cancelar</a>
+                    <button type="submit" class="primary-button">{{ submit_label }}</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+{% endblock %}

@@ -1,0 +1,43 @@
+<aside class="sidebar-shell">
+    <div class="brand-block">
+        <a class="brand" href="{% if user_role == 'doctor' %}{% url 'doctor_dashboard' %}{% else %}{% url 'patient_dashboard' %}{% endif %}">
+            <span class="brand-mark">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 2 5 5v6c0 4.5 2.9 8.6 7 10 4.1-1.4 7-5.5 7-10V5l-7-3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                    <path d="M9.4 12.3 11.2 14l3.6-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            <span>
+                <strong>MedBoard</strong>
+                <small>Clinical OS</small>
+            </span>
+        </a>
+    </div>
+
+    <nav class="sidebar-nav">
+        {% if user_role == 'patient' %}
+            <a class="nav-link {% if page_name == 'dashboard' %}active{% endif %}" href="{% url 'patient_dashboard' %}">Dashboard</a>
+            <a class="nav-link {% if page_name == 'consultations' %}active{% endif %}" href="{% url 'consultation_list' %}">Minhas Consultas</a>
+            <a class="nav-link {% if page_name == 'agendar' %}active{% endif %}" href="{% url 'consultation_create' %}">Agendar</a>
+        {% else %}
+            <a class="nav-link {% if page_name == 'dashboard' %}active{% endif %}" href="{% url 'doctor_dashboard' %}">Dashboard</a>
+            <a class="nav-link {% if page_name == 'consultations' %}active{% endif %}" href="{% url 'consultation_list' %}">Agenda</a>
+        {% endif %}
+    </nav>
+
+    <div class="sidebar-footer">
+        <div class="user-chip">
+            <div class="avatar-circle">{{ request.user.username|slice:":1"|upper }}</div>
+            <div>
+                <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
+                <small>
+                    {% if user_role == 'doctor' %}Médico{% else %}Paciente{% endif %}
+                </small>
+            </div>
+        </div>
+       <form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit" class="logout-link logout-button">Sair da conta</button>
+</form>
+    </div>
+</aside>

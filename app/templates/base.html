@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}MedBoard{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="{% block body_class %}auth-page{% endblock %}">
+    {% if messages %}
+        <div class="toast-stack">
+            {% for message in messages %}   
+                <div class="toast toast-{{ message.tags|default:'info' }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% block layout %}{% endblock %}
+</body>
+</html>

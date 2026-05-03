@@ -20,11 +20,12 @@ from app .views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-        # auth
+    # auth
     path('', CustomLoginView.as_view(), name='login'),
     path('logout/', CustomLogoutView.as_view(), name='logout'),
 
     # register
+    path('register/', RegisterChoiceView.as_view(), name='register_choice'),
     path('register/patient/', PatientRegisterView.as_view(), name='register_patient'),
     path('register/doctor/', DoctorRegisterView.as_view(), name='register_doctor'),
 

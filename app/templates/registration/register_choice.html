@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Cadastro | MedBoard{% endblock %}
+
+{% block layout %}
+<main class="choice-shell">
+    <header class="simple-header">
+        <a class="brand compact" href="{% url 'login' %}">
+            <span class="brand-mark">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 2 5 5v6c0 4.5 2.9 8.6 7 10 4.1-1.4 7-5.5 7-10V5l-7-3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                    <path d="M9.4 12.3 11.2 14l3.6-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+            <span><strong>MedBoard</strong></span>
+        </a>
+        <a class="back-link" href="{% url 'login' %}">Voltar ao login</a>
+    </header>
+
+    <section class="choice-content">
+        <h1>Como deseja usar o MedBoard?</h1>
+        <p>Escolha o seu perfil para personalizarmos sua experiencia.</p>
+
+        <div class="choice-grid">
+            <a class="choice-card" href="{% url 'register_patient' %}">
+                <span class="choice-icon patient"></span>
+                <div>
+                    <h2>Sou Paciente</h2>
+                    <p>Quero agendar consultas, acompanhar meu histórico e cuidar da minha saúde.</p>
+                </div>
+            </a>
+
+            <a class="choice-card" href="{% url 'register_doctor' %}">
+                <span class="choice-icon doctor"></span>
+                <div>
+                    <h2>Sou Médico</h2>
+                    <p>Quero gerenciar minha agenda, atender pacientes e organizar minha clínica.</p>
+                </div>
+            </a>
+        </div>
+    </section>
+</main>
+{% endblock %}
