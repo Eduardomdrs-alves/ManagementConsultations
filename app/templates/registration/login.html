@@ -6,21 +6,12 @@
 <main class="auth-shell">
     <section class="auth-hero">
         <div class="auth-intro">
-            <span class="hero-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12 2 5 5v6c0 4.5 2.9 8.6 7 10 4.1-1.4 7-5.5 7-10V5l-7-3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                    <path d="M9.4 12.3 11.2 14l3.6-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </span>
             <h1>Bem-vindo ao MedBoard</h1>
             <p>Sua saúde e agenda clínica em um só lugar.</p>
         </div>
 
         <div class="auth-card">
-            <div class="segmented-tabs">
-                <button type="button" class="segment active">Paciente</button>
-                <button type="button" class="segment">Médico</button>
-            </div>
+        
 
             <form method="post" class="form-stack">
                 {% csrf_token %}

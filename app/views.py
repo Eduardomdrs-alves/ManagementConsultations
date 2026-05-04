@@ -39,18 +39,6 @@ class CustomLoginView(LoginView):
 
         return reverse_lazy("login")
 
-    def get_success_url(self):
-        user = self.request.user
-
-        if user.groups.filter(name="Doctor").exists():
-            return reverse_lazy("doctor_dashboard")
-
-        if user.groups.filter(name="Patient").exists():
-            return reverse_lazy("patient_dashboard")
-
-        return reverse_lazy("login")
-
-
 class CustomLogoutView(LogoutView):
     next_page = reverse_lazy("login")
 
