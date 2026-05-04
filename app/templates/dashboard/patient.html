@@ -10,7 +10,7 @@
     <section class="content-shell">
         <header class="page-header">
             <div>
-                <span class="eyebrow">Bom dia, {{ request.user.username }}!</span>
+                <span class="eyebrow">BOM DIA, {{ user.first_name|upper }} {{ user.last_name|upper }}!</span>
                 <h1>Seu Dashboard de Saude</h1>
             </div>
             <a href="{% url 'consultation_create' %}" class="primary-button header-button">Novo agendamento</a>

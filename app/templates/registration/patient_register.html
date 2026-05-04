@@ -52,11 +52,6 @@
                     {% if form.telefone.errors %}<small class="field-error">{{ form.telefone.errors|join:', ' }}</small>{% endif %}
                 </div>
                 <div class="field-group">
-                    <label for="{{ form.username.id_for_label }}">Usuário</label>
-                    {{ form.username }}
-                    {% if form.username.errors %}<small class="field-error">{{ form.username.errors|join:', ' }}</small>{% endif %}
-                </div>
-                <div class="field-group">
                     <label for="{{ form.password.id_for_label }}">Crie uma senha</label>
                     {{ form.password }}
                     {% if form.password.errors %}<small class="field-error">{{ form.password.errors|join:', ' }}</small>{% endif %}

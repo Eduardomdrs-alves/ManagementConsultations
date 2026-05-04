@@ -15,6 +15,30 @@ class CustomLoginView(LoginView):
     template_name = "registration/login.html"
     redirect_authenticated_user = False
 
+    def post(self, request, *args, **kwargs):
+        from django.contrib.auth.models import User
+        email = request.POST.get('username', '')
+        if '@' in email:
+            try:
+                user = User.objects.filter(email=email).first()
+                if user:
+                    request.POST = request.POST.copy()
+                    request.POST['username'] = user.username
+            except User.DoesNotExist:
+                pass
+        return super().post(request, *args, **kwargs)
+
+    def get_success_url(self):
+        user = self.request.user
+
+        if user.groups.filter(name="Doctor").exists():
+            return reverse_lazy("doctor_dashboard")
+
+        if user.groups.filter(name="Patient").exists():
+            return reverse_lazy("patient_dashboard")
+
+        return reverse_lazy("login")
+
     def get_success_url(self):
         user = self.request.user
 

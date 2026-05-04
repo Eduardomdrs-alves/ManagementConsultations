@@ -1,6 +1,9 @@
 from django import forms
 from django.contrib.auth.models import Group, User
 from django.utils import timezone
+from django import forms
+from django.contrib.auth.models import Group, User
+from django.utils import timezone
 
 from .models import Consultation, Doctor, Patient
 
@@ -56,7 +59,6 @@ class ConsultationForm(forms.ModelForm):
 
 
 class PatientRegisterForm(forms.ModelForm):
-    username = forms.CharField()
     email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
     password_confirm = forms.CharField(widget=forms.PasswordInput)
@@ -70,6 +72,7 @@ class PatientRegisterForm(forms.ModelForm):
         cleaned_data = super().clean()
         password = cleaned_data.get("password")
         password_confirm = cleaned_data.get("password_confirm")
+        username = cleaned_data.get("username")
 
         if password and password_confirm and password != password_confirm:
             raise forms.ValidationError("As senhas informadas não coincidem.")
@@ -78,12 +81,26 @@ class PatientRegisterForm(forms.ModelForm):
 
     def save(self, commit=True):
         group, _ = Group.objects.get_or_create(name="Patient")
+        nome = self.cleaned_data["nome"]
+        partes = nome.strip().split()
+        base_username = f"{partes[0]}.{partes[1]}".lower() if len(partes) > 1 else partes[0].lower()
+        username = base_username
+        counter = 1
+        while User.objects.filter(username=username).exists():
+            username = f"{base_username}{counter}"
+            counter += 1
+
         user = User.objects.create_user(
-            username=self.cleaned_data["username"],
+            username=username,
             email=self.cleaned_data["email"],
             password=self.cleaned_data["password"],
         )
         user.groups.add(group)
+
+        partes = self.cleaned_data["nome"].strip().split()
+        user.first_name = partes[0]
+        user.last_name = partes[1] if len(partes) > 1 else ""
+        user.save()
 
         patient = Patient.objects.create(
             user=user,
@@ -97,7 +114,6 @@ class PatientRegisterForm(forms.ModelForm):
 
 
 class DoctorRegisterForm(forms.ModelForm):
-    username = forms.CharField()
     email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
     password_confirm = forms.CharField(widget=forms.PasswordInput)
@@ -111,6 +127,7 @@ class DoctorRegisterForm(forms.ModelForm):
         cleaned_data = super().clean()
         password = cleaned_data.get("password")
         password_confirm = cleaned_data.get("password_confirm")
+        username = cleaned_data.get("username")
 
         if password and password_confirm and password != password_confirm:
             raise forms.ValidationError("As senhas informadas não coincidem.")
@@ -119,12 +136,26 @@ class DoctorRegisterForm(forms.ModelForm):
 
     def save(self, commit=True):
         group, _ = Group.objects.get_or_create(name="Doctor")
+        nome = self.cleaned_data["nome"]
+        partes = nome.strip().split()
+        base_username = f"{partes[0]}.{partes[1]}".lower() if len(partes) > 1 else partes[0].lower()
+        username = base_username
+        counter = 1
+        while User.objects.filter(username=username).exists():
+            username = f"{base_username}{counter}"
+            counter += 1
+
         user = User.objects.create_user(
-            username=self.cleaned_data["username"],
+            username=username,
             email=self.cleaned_data["email"],
             password=self.cleaned_data["password"],
         )
         user.groups.add(group)
+
+        partes = self.cleaned_data["nome"].strip().split()
+        user.first_name = partes[0]
+        user.last_name = " ".join(partes[1:]) if len(partes) > 1 else ""
+        user.save()
 
         doctor = Doctor.objects.create(
             user=user,

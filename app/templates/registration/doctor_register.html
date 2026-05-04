@@ -52,11 +52,6 @@
                     {% if form.telefone.errors %}<small class="field-error">{{ form.telefone.errors|join:', ' }}</small>{% endif %}
                 </div>
                 <div class="field-group">
-                    <label for="{{ form.username.id_for_label }}">Usuário</label>
-                    {{ form.username }}
-                    {% if form.username.errors %}<small class="field-error">{{ form.username.errors|join:', ' }}</small>{% endif %}
-                </div>
-                <div class="field-group">
                     <label for="{{ form.specialty.id_for_label }}">Especialidade</label>
                     {{ form.specialty }}
                     {% if form.specialty.errors %}<small class="field-error">{{ form.specialty.errors|join:', ' }}</small>{% endif %}
